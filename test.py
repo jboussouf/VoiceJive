@@ -1,6 +1,7 @@
-from firebase import Firebase
+from auth import Auth
 
-user = Firebase()
+auth = Auth()
+"""
 data = {
     'name': 'John Doe',
     'age': 30,
@@ -11,4 +12,6 @@ data = {
         'experience':15
     }
 }
-user.add_data("users.name",data)
+user.add_data("users.name",data)"""
+
+print(auth.create_user("issamsp12@gmail.com"))
