@@ -1,18 +1,20 @@
 from firebase import Firebase
 from post import Post
+from firebase_admin import firestore
 
 class User():
 
-    def __init__(self, firstName, lastName):
-        self.firstName = firstName
-        self.lastName = lastName
-        self.store = Firebase()
+    def __init__(self, uid):
+        self.uid = uid
         self.posts = []
+        self.friend = []
 
     def create_post(self, content):
         post = Post(content)
         self.posts.append(post)
-        self.store.save_post(post)
+        db = firestore.Client()
+        
+        print("post added !")
 
     def get_posts(self):
         return self.posts

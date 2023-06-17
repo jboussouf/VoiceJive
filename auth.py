@@ -1,17 +1,33 @@
 from firebase import Firebase
 from firebase_admin import auth
+from firebase_admin import firestore
+from user import User
 
 
 class Auth():
 
     def __init__(self):
-            user = Firebase()
+        user = Firebase()
 
-    def create_user(self, email):
+    def create_user(self, email, userName):
+        # Create the user
         user = auth.create_user(
             email=email
         )
-        print('User created successfully!')
+
+        # Store additional user information in the database
+        user_data_0 = {
+            'email': user.email,
+            'userName': userName,
+            'uid': user.uid,
+            'friends' : [],
+            'posts' : []
+        }
+
+        # Save the user data to the database
+        db = firestore.client()
+        db.collection('users').document(user.uid).set(user_data_0)
+
         return user.uid
     
     def sign_in(self, email):
