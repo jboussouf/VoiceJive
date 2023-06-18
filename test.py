@@ -1,11 +1,7 @@
 from auth import Auth
 from user import User 
-from firebase_admin import firestore, credentials
-import firebase_admin
 
 
-cred = credentials.Certificate("./serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
 
 auth = Auth()
 """
@@ -21,25 +17,11 @@ data = {
 }
 user.add_data("users.name",data)"""
 
-uid = auth.sign_in("sedissam@gmail.com")
+uid = auth.sign_in("issam@issam.com")
+print(uid)
 
-# Create a Firestore client
-db = firestore.Client()
+user = User(uid)
+user.create_post("hello! it's my first post")
 
-# Access the Firestore document for the user
-user_doc_ref = db.collection('users').document(uid)
-
-# Retrieve the user document
-user_doc = user_doc_ref.get()
-
-# Check if the document exists
-if user_doc.exists:
-    # Get the user data as a dictionary
-    user_data = user_doc.to_dict()
-    
-    # Print or use the user data
-    print(user_data)
-else:
-    print("User document does not exist.")
 
 

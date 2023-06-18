@@ -3,8 +3,9 @@
 
 class Post():
 
-    def __init__(self, content):
-        self.content = content
+    def __init__(self, audio, caption):
+        self.caption = caption
+        self.audio = audio
         self.likes = []
         self.comments = []
 

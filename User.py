@@ -8,11 +8,23 @@ class User():
         self.uid = uid
         self.posts = []
         self.friend = []
+        
 
-    def create_post(self, content):
+    def create_post(self):
+        
+        content = None
         post = Post(content)
         self.posts.append(post)
-        db = firestore.Client()
+        db = firestore.client()
+        doc_ref = db.collection('users').document(self.uid)
+        doc_snapshot = doc_ref.get()
+        if doc_snapshot.exists:
+            doc_data = doc_snapshot.to_dict()
+            doc_data["posts"].append(content)
+            db.collection('users').document(self.uid).set(doc_data)
+            print(doc_data)
+        else:
+            print("Document does not exist.")
         
         print("post added !")
 
@@ -25,6 +37,3 @@ class User():
     def comment_on_post(self, post, comment):
         post.add_comment(self, comment)
 
-    def get_feed(self):
-        # Retrieve and return the user's feed from the Firebase store
-        return self.store.get_feed(self)
