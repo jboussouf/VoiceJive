@@ -10,10 +10,9 @@ class User():
         self.friend = []
         
 
-    def create_post(self):
+    def create_post(self, content):
         
-        content = None
-        post = Post(content)
+        post = Post(content["audio"], content["caption"])
         self.posts.append(post)
         db = firestore.client()
         doc_ref = db.collection('users').document(self.uid)
@@ -22,13 +21,17 @@ class User():
             doc_data = doc_snapshot.to_dict()
             doc_data["posts"].append(content)
             db.collection('users').document(self.uid).set(doc_data)
-            print(doc_data)
+            #print(doc_data)
         else:
             print("Document does not exist.")
         
         print("post added !")
 
     def get_posts(self):
+        db = firestore.client()
+        doc_ref = db.collection('users').document(self.uid)
+        doc_snapshot = doc_ref.get()
+        doc_data = doc_snapshot.to_dict()
         return self.posts
 
     def like_post(self, post):

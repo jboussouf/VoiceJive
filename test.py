@@ -1,27 +1,21 @@
 from auth import Auth
 from user import User 
+from audio import FirebaseStorageManager
 
+# Create an instance of the FirebaseStorageManager class
+manager = FirebaseStorageManager('./serviceAccountKey.json', 'socialsphere-6841e.appspot.com')
 
+# Upload an MP3 file and get the URL
+file_path = 'audio.wav'
+destination_path = 'audio_files/audio1.mp3'
+audio_url = manager.upload_audio_file(file_path, destination_path)
+print("Audio URL:", audio_url)
 
-auth = Auth()
-"""
-data = {
-    'name': 'John Doe',
-    'age': 30,
-    'email': 'johndoe@example.com',
-    'informations':{
-        'job':['AI', 'ML', 'LLM'],
-        'socity':'IBM',
-        'experience':15
-    }
-}
-user.add_data("users.name",data)"""
+# Get the URL of an existing MP3 file
+file_path = 'audio_files/audio1.mp3'
+audio_url = manager.get_audio_url(file_path)
+print("Audio URL:", audio_url)
 
-uid = auth.sign_in("issam@issam.com")
-print(uid)
-
-user = User(uid)
-user.create_post("hello! it's my first post")
 
 
 
