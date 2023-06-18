@@ -9,7 +9,8 @@ class Firebase:
 
     def __init__(self):
         cred = credentials.Certificate("./serviceAccountKey.json")
-        firebase_admin.initialize_app(cred)
+        storage_bucket = 'socialsphere-6841e.appspot.com'
+        firebase_admin.initialize_app(cred, {'storageBucket': storage_bucket})
 
     """
     def add_data(self, collection_name, document_data):
@@ -17,6 +18,8 @@ class Firebase:
         collection_ref = db.collection(collection_name)
         collection_ref.add(document_data)
         print('Data added successfully!')"""
+    
+
     
     def save_post(self, post):
         # Save the post to the Firebase database
