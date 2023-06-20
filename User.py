@@ -39,10 +39,33 @@ class User():
         doc_data = doc_snapshot.to_dict()
         #print(doc_data)
         return self.posts
+    
+    def getOnePost(self, idPost):
+        db = firestore.client()
+        # Specify the collection and query
+        collection_ref = db.collection('users')
+        query_ref = collection_ref.where('posts', '==', 'value')
+
+        # Retrieve the documents that match the query
+        docs = query_ref.get()
+
+        # Iterate over the documents
+        for doc in docs:
+            # Access document fields
+            print(f'Document ID: {doc.id}')
+            print(f'Document Data: {doc.to_dict()}')
+
+        return post
+
+
+
+        return post
 
     def like_post(self, post):
+        # we need add here the post ID in order to recognize which post the user wants to like
         post.add_like(self)
 
     def comment_on_post(self, post, comment):
+        # we need add here the post ID in order to recognize which post the user wants to comment
         post.add_comment(self, comment)
 

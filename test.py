@@ -24,7 +24,7 @@ postdata = {"audio": "audio.wav",
             "likes": [],
             "comments": []}
 
-user.create_post(postdata)
+user.getOnePost(2)
 
 
 
