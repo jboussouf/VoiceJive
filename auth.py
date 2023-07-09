@@ -1,7 +1,7 @@
 from firebase import Firebase
 from firebase_admin import auth
 from firebase_admin import firestore
-from user import User
+
 
 
 class Auth():

@@ -3,13 +3,19 @@ from post import Post
 from firebase_admin import firestore
 from audio import FirebaseStorageManager
 
+def get_ref(user_id):
+    db = firestore.client()
+    doc_ref = db.collection('users').document(user_id)
+    
+    return doc_ref
+
 class User():
 
     def __init__(self, uid):
         self.uid = uid
         self.posts = []
         self.friend = []
-        
+        self.messenger = {}
 
     def create_post(self, content):
         db = firestore.client()
@@ -32,13 +38,43 @@ class User():
         
         print("post added !")
 
+    
+    #def get_posts(self): return to_dict(self.uid)
+
     def get_posts(self):
-        db = firestore.client()
-        doc_ref = db.collection('users').document(self.uid)
+        doc_ref = get_ref(self.uid)
         doc_snapshot = doc_ref.get()
         doc_data = doc_snapshot.to_dict()
-        #print(doc_data)
-        return self.posts
+        print(doc_data)
+        return doc_data['posts'] # return list
+    
+    def add_friend(self, friendID):
+        me = get_ref(self.uid)
+        friend = get_ref(friendID)
+
+        me.update({
+            "friends": firestore.ArrayUnion([{"friendID": friendID, "messenger": []}])
+        })
+
+        friend.update({
+            "friends": firestore.ArrayUnion([{"friendID": self.uid, "messenger": []}])
+        })
+
+        print("the frind is added !")
+    
+    def send_msg(self, friendID, msg):
+        me = get_ref(self.uid)
+        friend = get_ref(friendID)
+
+        me.update({
+            f"friends.{friendID}.messenger": firestore.ArrayUnion(["me/" + msg])
+        })
+
+        friend.update({
+            f"friends.{self.uid}.messenger": firestore.ArrayUnion(["friend/" + msg])
+        })
+
+        print("The friend's messenger list is updated!")
     
     def getOnePost(self, idPost):
         db = firestore.client()
@@ -54,12 +90,7 @@ class User():
             # Access document fields
             print(f'Document ID: {doc.id}')
             print(f'Document Data: {doc.to_dict()}')
-
-        return post
-
-
-
-        return post
+    
 
     def like_post(self, post):
         # we need add here the post ID in order to recognize which post the user wants to like
@@ -68,4 +99,12 @@ class User():
     def comment_on_post(self, post, comment):
         # we need add here the post ID in order to recognize which post the user wants to comment
         post.add_comment(self, comment)
+
+    def user_to_dict(self, user_id):
+        db = firestore.client()
+        doc_ref = db.collection('users').document(user_id)
+        doc_snapshot = doc_ref.get()
+        doc_data = doc_snapshot.to_dict()
+        print(doc_data)
+        return doc_data
 
