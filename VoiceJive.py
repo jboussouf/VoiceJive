@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -24,8 +24,15 @@ def save_audio():
     if 'audio' in request.files:
         audio_file = request.files['audio']
         audio_file.save('./recording.wav')
-        return 'Audio saved successfully!'
-    return 'No audio file received.'
+
+        caption = request.form['caption']
+        print(caption)
+    return redirect('/index')
+
+
+@app.route('/newPost', methods=['POST'])
+def newPost():
+    return render_template('newPost.html')
 
 
 if __name__ == '__main__':

@@ -23,9 +23,13 @@ function stopRecording() {
 }
 
 function sendAudio() {
+    const captionInput = document.getElementById('mycaption');
+    const captionValue = captionInput.value;
+
     const blob = new Blob(recordedChunks, { type: 'audio/wav' });
     const formData = new FormData();
     formData.append('audio', blob, 'recording.wav');
+    formData.append('caption', captionValue);
 
     fetch('/save-audio', {
         method: 'POST',
@@ -33,6 +37,7 @@ function sendAudio() {
     })
     .then(function(response) {
         console.log('Audio sent successfully!');
+        window.location.href = '/index';
     })
     .catch(function(error) {
         console.error('Error sending audio:', error);
@@ -40,3 +45,5 @@ function sendAudio() {
 }
 
 // great!
+
+
