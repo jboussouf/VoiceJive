@@ -1,5 +1,5 @@
 from auth import Auth
-from user import User 
+#from user import User 
 
 
 
@@ -9,13 +9,13 @@ auth = Auth()
 #print("This is the user ID :", uid2)
 
 uid2 = auth.sign_in("test3@gmail.com")
-
-uid = auth.sign_in("test@gmail.com")
-
-user = User(uid)
-user2 = User(uid2)
-
-user.send_msg(uid2, "I'm great, so tell me about the fact that zdagadag")
+print(uid2)
+#uid = auth.sign_in("test@gmail.com")
+#
+#user = User(uid)
+#user2 = User(uid2)
+#
+#user.send_msg(uid2, "I'm great, so tell me about the fact that zdagadag")
 
 
 
