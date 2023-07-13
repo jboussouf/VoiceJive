@@ -20,7 +20,7 @@ class Auth():
             'email': user.email,
             'userName': userName,
             'uid': user.uid,
-            'friends' : [],
+            'friends' : {},
             'posts' : []
         }
 

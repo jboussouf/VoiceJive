@@ -38,9 +38,6 @@ class User():
         
         print("post added !")
 
-    
-    #def get_posts(self): return to_dict(self.uid)
-
     def get_posts(self):
         doc_ref = get_ref(self.uid)
         doc_snapshot = doc_ref.get()
@@ -48,31 +45,43 @@ class User():
         print(doc_data)
         return doc_data['posts'] # return list
     
-    def add_friend(self, friendID):
-        me = get_ref(self.uid)
-        friend = get_ref(friendID)
+    def add_friend(self, friend):
+        friendID = friend.uid
+        db = firestore.client()
 
-        me.update({
-            "friends": firestore.ArrayUnion([{"friendID": friendID, "messenger": []}])
-        })
+        # add friend to the user list
+        me_ref = db.collection('users').document(self.uid)
+        doc_snapshot = me_ref.get()
+        doc_data = doc_snapshot.to_dict()
+        doc_data["friends"][friendID] = {"messenger": []}
+        me_ref.set(doc_data)
 
-        friend.update({
-            "friends": firestore.ArrayUnion([{"friendID": self.uid, "messenger": []}])
-        })
+        # add user to the frind list
+        friend_ref = db.collection('users').document(friendID)
+        doc_snapshot = friend_ref.get()
+        doc_data = doc_snapshot.to_dict()
+        doc_data["friends"][self.uid] = {"messenger": []}
+        friend_ref.set(doc_data)
 
         print("the frind is added !")
     
-    def send_msg(self, friendID, msg):
-        me = get_ref(self.uid)
-        friend = get_ref(friendID)
+    def send_msg(self, friend, msg):
+        friendID = friend.uid
+        db = firestore.client()
 
-        me.update({
-            f"friends.{friendID}.messenger": firestore.ArrayUnion(["me/" + msg])
-        })
+        # add msg to user messanger list
+        me_ref = db.collection('users').document(self.uid)
+        doc_snapshot = me_ref.get()
+        doc_data = doc_snapshot.to_dict()
+        doc_data["friends"][friendID]["messenger"].append("me/" + msg)
+        me_ref.set(doc_data)
 
-        friend.update({
-            f"friends.{self.uid}.messenger": firestore.ArrayUnion(["friend/" + msg])
-        })
+        # add msg to friend messanger list
+        friend_ref = db.collection('users').document(friendID)
+        doc_snapshot = friend_ref.get()
+        doc_data = doc_snapshot.to_dict()
+        doc_data["friends"][self.uid]["messenger"].append("friend/" + msg)
+        friend_ref.set(doc_data)
 
         print("The friend's messenger list is updated!")
     
