@@ -14,6 +14,25 @@
   display: none;
 }
 
+.container{
+  margin-top: 2%;
+}
+.grid_container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+.elem1 {
+  padding: 10px;
+}
 
+.elem2 {
+  padding: 10px;
+}
 
-
+.friend-post{
+  display: grid;
+  grid-template-columns: 1fr 0fr;
+  grid-gap: 10px;
+  text-align: right;
+}
