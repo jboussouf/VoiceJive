@@ -1,4 +1,4 @@
-from User import User
+from User import User, getAll_posts, get_all_friends
 from auth import Auth
 from flask import Flask, render_template, request, redirect, session, url_for
 from post import Post
@@ -24,7 +24,9 @@ def signin():
 @app.route('/index')
 def index():
     if session.get('UID', None) != None:
-        return render_template('index.html')
+        all_posts = getAll_posts()
+        print(all_posts)
+        return render_template('index.html', data = all_posts)
     return render_template('login.html')
 
 @app.route('/save-audio', methods=['POST'])
@@ -43,6 +45,16 @@ def save_audio():
 @app.route('/newPost', methods=['POST'])
 def newPost():
     return render_template('newPost.html')
+
+
+############ get friends
+@app.route('/friends', methods=['post'])
+def friend():
+    if session.get('UID', None) != None:
+        friends = get_all_friends(session.get('UID', None)) 
+        return render_template('friend.html', friends = friends)
+    else:
+        return render_template('login.html')
 
 
 if __name__ == '__main__':

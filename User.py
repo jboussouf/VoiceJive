@@ -3,6 +3,7 @@ from post import Post
 from firebase_admin import firestore
 from audio import FirebaseStorageManager
 from firebase_admin import auth
+from datetime import datetime
 
 def get_ref(user_id):
     db = firestore.client()
@@ -16,18 +17,46 @@ def get_posts(uid):
         doc_data = doc_snapshot.to_dict()
         return doc_data['posts']
 
+def get_UserName(uid):
+        doc_ref = get_ref(uid)
+        doc_snapshot = doc_ref.get()
+        doc_data = doc_snapshot.to_dict()
+        return doc_data['userName']
+
 def getAll_posts():
         posts = []
         list_users = auth.list_users().users
         for item in list_users:
             user_posts = get_posts(item.uid)
+            userName = get_UserName(item.uid)
             if len(user_posts) == 0:
                  continue
             else:
                 for subItem in user_posts:
-                    posts.append(subItem)
+                    posts.append((userName, subItem))
         print(len(posts))
         return posts
+
+def get_friend(uid):
+    doc_ref = get_ref(uid)
+    doc_snapshot = doc_ref.get()
+    doc_data = doc_snapshot.to_dict()
+    return doc_data['friends']
+
+def last_msg(uid, key):
+    doc_ref = get_ref(uid)
+    doc_snapshot = doc_ref.get()
+    doc_data = doc_snapshot.to_dict()
+    return doc_data['friends'][key]["messenger"][-1]
+
+def get_all_friends(uid):
+    friend = get_friend(uid)
+    friends_userNames = []
+    for key in friend.keys():
+        msg=last_msg(uid, key).split('/')
+        friends_userNames.append([key, get_UserName(key), msg[0], msg[-1]])
+    return friends_userNames
+
 
 class User():
 
@@ -44,6 +73,8 @@ class User():
         doc_data = doc_snapshot.to_dict()
         self.posts = doc_data["posts"]
 
+        content['date'] = datetime.now().strftime("%B %d, %Y")
+        
         manager = FirebaseStorageManager()
         destination_path = self.uid+'/audio'+str(len(self.posts))+'.mp3'
         audio_url = manager.upload_audio_file(content["audio"], destination_path)
