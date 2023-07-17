@@ -103,22 +103,21 @@ class User():
         print("post added !")
   
     
-    def add_friend(self, friend):
-        friendID = friend
+    def add_friend(self, friendID):
         db = firestore.client()
 
         # add friend to the user list
         me_ref = db.collection('users').document(self.uid)
         doc_snapshot = me_ref.get()
         doc_data = doc_snapshot.to_dict()
-        doc_data["friends"][friendID] = {"messenger": [" /say hello"]}
+        doc_data["friends"][friendID] = {"messenger": [" /Say hello"]}
         me_ref.set(doc_data)
 
         # add user to the frind list
         friend_ref = db.collection('users').document(friendID)
         doc_snapshot = friend_ref.get()
         doc_data = doc_snapshot.to_dict()
-        doc_data["friends"][self.uid] = {"messenger": [" /say hello"]}
+        doc_data["friends"][self.uid] = {"messenger": [" /Say hello"]}
         friend_ref.set(doc_data)
 
         print("the frind is added !")

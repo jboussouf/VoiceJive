@@ -8,19 +8,22 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.secret_key = 'secured_session'
+auth = Auth()
+
 
 @app.route('/', methods=['GET', 'POST'])
 @cross_origin()
 def main():
     if request.method == 'POST' and request.form.get('email', None) != None:
         session['email'] = request.form.get('email', None)
-        auth = Auth()
         session['UID'] = auth.sign_in(session['email'])
-        print(session['UID'])
         return redirect(url_for('index'))
     return render_template('login.html')
 
-#cc
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
 @app.route('/signup')
 @cross_origin()
 def signin():
@@ -31,7 +34,6 @@ def signin():
 def index():
     if session.get('UID', None) != None:
         all_posts = getAll_posts()
-        print(all_posts)
         return render_template('index.html', data = all_posts)
     return render_template('login.html')
 
@@ -41,9 +43,7 @@ def save_audio():
     if 'audio' in request.files:
         audio_file = request.files['audio']
         audio_file.save('./recording.wav')
-
         caption = request.form['caption']
-        print(caption)
     user = User(session['UID'])
     user.create_post({'audio': './recording.wav', 'caption':caption})
     return redirect('/index')
@@ -56,30 +56,37 @@ def newPost():
 
 
 ############ get friends
-@app.route('/friends', methods=['post'])
+@app.route('/friends', methods=['POST'])
 @cross_origin()
 def friend():
     if session.get('UID', None) != None:
         friends = get_all_friends(session.get('UID', None)) 
         not_friend = not_friends(session.get('UID', None))
-        print(not_friend)
         return render_template('friend.html', friends = friends, not_friend = not_friend)
     else:
         return render_template('login.html')
     
 
 
-@app.route('/add_friend', methods=['post'])
+@app.route('/add_friend', methods=['POST'])
 @cross_origin()
 def add_friend():
     if request.method == 'POST' and request.form.get('user', None) != None and session.get('UID', None) != None:
         uid = request.form.get('user', None)
         user = User(session.get('UID', None))
-        print(uid)
         user.add_friend(uid)
-        return redirect(url_for("/friends"))
+        return redirect(url_for("index"))
     else:
-        return redirect(url_for('/index'))
+        return redirect(url_for('index'))
+
+@app.route('/create_account', methods=['POST'])
+def create_account():
+    if request.method == 'POST' and request.form.get('username', None) != None and request.form.get('email', None) != None and session.get('UID', None) != None:
+        username = request.form.get('username', None)
+        email = request.form.get('email', None)
+        auth.create_user(email, username)
+        return redirect(url_for('login'))
+    return redirect(url_for('signup'))
 
 if __name__ == '__main__':
     app.run(debug=True)
