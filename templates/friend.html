@@ -11,21 +11,33 @@
 </head>
 
 <body>
-<div class="container">
- {% for item in friends %}
-    <div class="card" id="{{ item[0] }}">
-        <div class="card-header" style="font-size: 28px;">
-            {{ item[1] }}
+    <div class="container">
+        {% for item in friends %}
+        <div class="card" id="{{ item[0] }}">
+            <div class="card-header" style="font-size: 28px;">
+                {{ item[1] }}
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>last message ({{ item[2] }}): {{ item[3] }}</p>
+                </blockquote>
+            </div>
         </div>
-        <div class="card-body">
-          <blockquote class="blockquote mb-0">
-            <p>last message ({{ item[2] }}): {{ item[3] }}</p>
-          </blockquote>
+        {% endfor %}
+        <hr>
+        {% for item in not_friend %}
+        <div class="card card_not_frunds">
+            <h5 class="card-header">{{ item[1] }}</h5>
+            <form action="/add_friend" method="post" class="card-header">
+                <input type="text" name="user" value="{{ item[0] }}" id="user">
+                <button type="submit" class="btn btn-outline-dark">add to friends</button>
+            </form>
         </div>
-      </div>
-{% endfor %}
+        {% endfor %}
 
-</div>
+
+
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

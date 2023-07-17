@@ -1,0 +1,11 @@
+.container{
+    margin-top: 2%;
+}
+.card_not_frunds{
+    display: grid;
+    grid-template-columns: 1fr 0.1fr;
+    grid-gap: 10px;
+}
+#user{
+    display: none;
+}

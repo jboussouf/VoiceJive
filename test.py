@@ -1,5 +1,5 @@
 from auth import Auth
-from User import User, getAll_posts, get_all_friends
+from User import User, getAll_posts, get_all_friends, not_friends
 import datetime
 
 current_date = datetime.date.today()
@@ -26,8 +26,10 @@ uid2 = auth.sign_in("test2@gmail.com")
 #            "date": formatted_date}
 #listo = getAll_posts()
 #print(listo)
-friends = get_all_friends(uid2)
-print(friends)
+#friends = get_all_friends(uid2)
+#print(friends)
+#not_friends = not_friends(uid2)
+#print(not_friends)
 '''
 postdata = {"audio": "audio.wav",
             "caption": "My audio",

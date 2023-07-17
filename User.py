@@ -57,6 +57,18 @@ def get_all_friends(uid):
         friends_userNames.append([key, get_UserName(key), msg[0], msg[-1]])
     return friends_userNames
 
+def not_friends(uid):
+    list_users = auth.list_users().users
+    all_friends = get_all_friends(uid)
+    friends_uid = [uid]
+    for item in all_friends:
+        friends_uid.append(item[0])
+    all_users = []
+    for item in list_users:
+        all_users.append(item.uid)
+    not_friend = [user for user in all_users if user not in friends_uid]
+    return [(userID, get_UserName(userID)) for userID in not_friend]
+
 
 class User():
 
@@ -92,7 +104,7 @@ class User():
   
     
     def add_friend(self, friend):
-        friendID = friend.uid
+        friendID = friend
         db = firestore.client()
 
         # add friend to the user list
@@ -106,7 +118,7 @@ class User():
         friend_ref = db.collection('users').document(friendID)
         doc_snapshot = friend_ref.get()
         doc_data = doc_snapshot.to_dict()
-        doc_data["friends"][self.uid] = {"messenger": []}
+        doc_data["friends"][self.uid] = {"messenger": ["sys/say hello"]}
         friend_ref.set(doc_data)
 
         print("the frind is added !")

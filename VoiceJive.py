@@ -1,4 +1,4 @@
-from User import User, getAll_posts, get_all_friends
+from User import User, getAll_posts, get_all_friends, not_friends
 from auth import Auth
 from flask import Flask, render_template, request, redirect, session, url_for
 from post import Post
@@ -17,9 +17,9 @@ def main():
     return render_template('login.html')
 
 #cc
-@app.route('/signin')
+@app.route('/signup')
 def signin():
-    return render_template('signin.html')
+    return render_template('signup.html')
 
 @app.route('/index')
 def index():
@@ -52,10 +52,24 @@ def newPost():
 def friend():
     if session.get('UID', None) != None:
         friends = get_all_friends(session.get('UID', None)) 
-        return render_template('friend.html', friends = friends)
+        not_friend = not_friends(session.get('UID', None))
+        print(not_friend)
+        return render_template('friend.html', friends = friends, not_friend = not_friend)
     else:
         return render_template('login.html')
+    
 
+
+@app.route('/add_friend', methods=['post'])
+def add_friend():
+    if request.method == 'POST' and request.form.get('user', None) != None and session.get('UID', None) != None:
+        uid = request.form.get('user', None)
+        user = User(session.get('UID', None))
+        print(uid)
+        user.add_friend(uid)
+        return redirect(url_for("friends"))
+    else:
+        return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
