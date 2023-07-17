@@ -8,14 +8,13 @@ formatted_date = current_date.strftime("%B %d, %Y")
 
 
 
-auth = Auth()
-"""
-uid1 = auth.create_user("test1@gmail.com", "test1")
-uid2 = auth.create_user("test2@gmail.com", "test2")
-uid3 = auth.create_user("test3@gmail.com", "test3")
-#print("This is the user ID :", uid2)"""
+#auth = Auth()
+#uid1 = auth.create_user("test1@gmail.com", "test1")
+#uid2 = auth.create_user("test2@gmail.com", "test2")
+#uid3 = auth.create_user("test3@gmail.com", "test3")
+#print("This is the user ID :", uid2)
 
-uid2 = auth.sign_in("test2@gmail.com")
+#uid2 = auth.sign_in("test2@gmail.com")
 #print(uid2)
 #
 #user2 = User(uid2)

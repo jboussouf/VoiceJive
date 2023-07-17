@@ -90,7 +90,7 @@ class User():
         manager = FirebaseStorageManager()
         destination_path = self.uid+'/audio'+str(len(self.posts))+'.mp3'
         audio_url = manager.upload_audio_file(content["audio"], destination_path)
-        storgeUrl = "https://storage.googleapis.com/socialsphere-6841e.appspot.com/"
+        storgeUrl = "https://storage.googleapis.com/voicejive.appspot.com/"
         print(audio_url)
         
         if doc_snapshot.exists:
@@ -111,14 +111,14 @@ class User():
         me_ref = db.collection('users').document(self.uid)
         doc_snapshot = me_ref.get()
         doc_data = doc_snapshot.to_dict()
-        doc_data["friends"][friendID] = {"messenger": []}
+        doc_data["friends"][friendID] = {"messenger": [" /say hello"]}
         me_ref.set(doc_data)
 
         # add user to the frind list
         friend_ref = db.collection('users').document(friendID)
         doc_snapshot = friend_ref.get()
         doc_data = doc_snapshot.to_dict()
-        doc_data["friends"][self.uid] = {"messenger": ["sys/say hello"]}
+        doc_data["friends"][self.uid] = {"messenger": [" /say hello"]}
         friend_ref.set(doc_data)
 
         print("the frind is added !")

@@ -9,7 +9,7 @@ class Firebase:
 
     def __init__(self):
         cred = credentials.Certificate("./serviceAccountKey.json")
-        storage_bucket = 'socialsphere-6841e.appspot.com'
+        storage_bucket = 'voicejive.appspot.com'
         firebase_admin.initialize_app(cred, {'storageBucket': storage_bucket})
 
     """
