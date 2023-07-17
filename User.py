@@ -34,7 +34,6 @@ def getAll_posts():
             else:
                 for subItem in user_posts:
                     posts.append((userName, subItem))
-        print(len(posts))
         return posts
 
 def get_friend(uid):
@@ -155,6 +154,6 @@ class User():
         doc_ref = db.collection('users').document(user_id)
         doc_snapshot = doc_ref.get()
         doc_data = doc_snapshot.to_dict()
-        print(doc_data)
+        #print(doc_data)
         return doc_data
 

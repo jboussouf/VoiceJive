@@ -9,3 +9,11 @@
 #user{
     display: none;
 }
+
+#user_card{
+    cursor: pointer;
+}
+
+#user_card:hover{
+    box-shadow: 0 2px 4px rgba(51, 68, 255, 0.4);
+}

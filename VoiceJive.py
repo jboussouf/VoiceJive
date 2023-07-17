@@ -34,6 +34,7 @@ def signin():
 def index():
     if session.get('UID', None) != None:
         all_posts = getAll_posts()
+        print(all_posts)
         return render_template('index.html', data = all_posts)
     return render_template('login.html')
 
