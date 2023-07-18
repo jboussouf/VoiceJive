@@ -1,4 +1,4 @@
-from User import User, getAll_posts, get_all_friends, not_friends
+from User import User, getAll_posts, get_all_friends, not_friends, all_msgs
 from auth import Auth
 from flask import Flask, render_template, request, redirect, session, url_for
 from post import Post
@@ -57,7 +57,7 @@ def newPost():
 
 
 ############ get friends
-@app.route('/friends', methods=['POST'])
+@app.route('/friends', methods=['POST', "GET"])
 @cross_origin()
 def friend():
     if session.get('UID', None) != None:
@@ -88,6 +88,27 @@ def create_account():
         auth.create_user(email, username)
         return redirect(url_for('login'))
     return redirect(url_for('signup'))
+
+@app.route('/communication', methods=["POST", "GET"])
+def communication():
+    if request.method == 'POST' and request.form.get('uidFriend', None) != None and session.get('UID', None) != None:
+        all_mess = all_msgs(session.get('UID'), request.form.get('uidFriend', None))
+        print(all_mess)
+        session['UIDFriend'] = request.form.get('uidFriend', None)
+        return render_template('messages.html', all_mess=all_mess)
+    elif session.get('UIDFriend', None) != None and session.get('UID', None) != None:
+        all_mess = all_msgs(session.get('UID'), session.get('UIDFriend', None))
+        print(all_mess)
+        return render_template('messages.html', all_mess=all_mess)
+
+@app.route('/send_mgs', methods=["POST"])
+def send_msg():
+    if request.method == 'POST' and request.form.get('message', None) and session.get('UID', None) != None and session.get('UIDFriend', None) != None:
+        user = User(session['UID'])
+        user.send_msg(session.get('UIDFriend', None), request.form.get('message', None))
+        return redirect(url_for('communication'))
+    return redirect(url_for('index'))
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

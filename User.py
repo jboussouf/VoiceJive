@@ -48,6 +48,12 @@ def last_msg(uid, key):
     doc_data = doc_snapshot.to_dict()
     return doc_data['friends'][key]["messenger"][-1]
 
+def all_msgs(uid, key):
+    doc_ref = get_ref(uid)
+    doc_snapshot = doc_ref.get()
+    doc_data = doc_snapshot.to_dict()
+    return doc_data['friends'][key]["messenger"]
+
 def get_all_friends(uid):
     friend = get_friend(uid)
     friends_userNames = []
@@ -121,8 +127,7 @@ class User():
 
         print("the frind is added !")
     
-    def send_msg(self, friend, msg):
-        friendID = friend.uid
+    def send_msg(self, friendID, msg):
         db = firestore.client()
 
         # add msg to user messanger list

@@ -1,0 +1,51 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    height: 100%;
+    justify-content: center;
+  align-items: flex-end;
+  overflow-y: auto;
+}
+
+form{
+    position: absolute;
+  bottom: 0;
+  margin-bottom: 4%;
+  width: 60%;
+}
+
+
+
+.message-bubble {
+    display: inline-block;
+    background-color: transparent;
+    background-color: rgba(230, 227, 227, 0.6);
+    border: #afafaf solid;
+    padding: 10px 15px;
+    border-radius: 20px 20px 20px 0;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    max-width: 45%;
+    font-size: 28px;
+  }
+
+.message-bubble_cls {
+    max-width: 45%;
+    background-color: transparent;
+    color: #000;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    max-width: 70%;
+    border-radius: 20px 20px 0 20px;
+    border: #DABBAC solid;
+    background-color: rgba(230, 227, 227, 0.6);
+    font-size: 28px;
+    float: right;
+  }

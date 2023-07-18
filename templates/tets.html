@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio</title>
+  <style>
+    body {
+      margin: 0;
+      padding-bottom: 50px; /* Add some padding at the bottom to prevent the element from overlapping with the content */
+    }
+
+    .bottom-element {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 50px;
+      background-color: #f1f1f1;
+      text-align: center;
+      line-height: 50px;
+    }
+  </style>
 </head>
-
 <body>
-
-</html><audio controls>
-    <source src="horse.ogg" type="audio/ogg">
-    <source src="https://storage.googleapis.com/voicejive.appspot.com/JRGSYWXX8SSK3DzXWMvjwy0KvpE2/audio1.mp3"
-        type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
+  <!-- Your page content here -->
+  
+  <div class="bottom-element">
+    This is the bottom element.
+  </div>
 </body>
+</html>
