@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, storage
 
-
+#upload an audio to firebase storage
 class FirebaseStorageManager:
     def __init__(self):
         self.bucket = storage.bucket()

@@ -20,15 +20,17 @@ def main():
         return redirect(url_for('index'))
     return render_template('login.html')
 
-
+#login to an account
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+#create account
 @app.route('/signup')
 @cross_origin()
 def signin():
     return render_template('signup.html')
-
+#index of our applications (all posts and ability to create post or add new frends)
 @app.route('/index')
 @cross_origin()
 def index():
@@ -38,6 +40,7 @@ def index():
         return render_template('index.html', data = all_posts)
     return render_template('login.html')
 
+#save the audio uploaded by a user
 @app.route('/save-audio', methods=['POST'])
 @cross_origin()
 def save_audio():
@@ -49,14 +52,14 @@ def save_audio():
     user.create_post({'audio': './recording.wav', 'caption':caption})
     return redirect('/index')
 
-
+#redirect to a page for creating a new post
 @app.route('/newPost', methods=['POST'])
 @cross_origin()
 def newPost():
     return render_template('newPost.html')
 
 
-############ get friends
+#get the list of all friends
 @app.route('/friends', methods=['POST', "GET"])
 @cross_origin()
 def friend():
@@ -68,7 +71,7 @@ def friend():
         return render_template('login.html')
     
 
-
+#add_friend to list of friends
 @app.route('/add_friend', methods=['POST'])
 @cross_origin()
 def add_friend():
@@ -80,6 +83,7 @@ def add_friend():
     else:
         return redirect(url_for('index'))
 
+#create an account in the application
 @app.route('/create_account', methods=['POST'])
 def create_account():
     if request.method == 'POST' and request.form.get('username', None) != None and request.form.get('email', None) != None and session.get('UID', None) != None:
@@ -89,6 +93,7 @@ def create_account():
         return redirect(url_for('login'))
     return redirect(url_for('signup'))
 
+#list of messages between friend
 @app.route('/communication', methods=["POST", "GET"])
 def communication():
     if request.method == 'POST' and request.form.get('uidFriend', None) != None and session.get('UID', None) != None:
@@ -100,7 +105,8 @@ def communication():
         all_mess = all_msgs(session.get('UID'), session.get('UIDFriend', None))
         print(all_mess)
         return render_template('messages.html', all_mess=all_mess)
-
+    
+#send msg to the friend
 @app.route('/send_mgs', methods=["POST"])
 def send_msg():
     if request.method == 'POST' and request.form.get('message', None) and session.get('UID', None) != None and session.get('UIDFriend', None) != None:

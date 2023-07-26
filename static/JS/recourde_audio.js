@@ -1,6 +1,7 @@
 let mediaRecorder;
 let recordedChunks = [];
 let audio_file;
+// start recourding an audio
 function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then(function(stream) {
@@ -16,13 +17,14 @@ function startRecording() {
         });
 }
 
+//stop the recording
 function stopRecording() {
     mediaRecorder.stop();
     document.getElementById('startBtn').disabled = false;
     document.getElementById('stopBtn').disabled = true;
     document.getElementById('sendBtn').disabled = false;
 }
-
+//select an alrady existe audio
 function select_audio() {
     let select_audio = document.createElement('input');
     select_audio.setAttribute('type', 'file');
@@ -41,7 +43,7 @@ function select_audio() {
     });
     select_audio.click();
   }
-
+//upload the audio to the server
   function sendAudio() {
     const captionInput = document.getElementById('mycaption');
     const captionValue = captionInput.value;

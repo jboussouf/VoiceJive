@@ -3,7 +3,7 @@ from firebase_admin import auth
 from firebase_admin import firestore
 
 
-
+# create and sign in to an account on firebese with fire base auth and firebase firestor
 class Auth():
 
     def __init__(self):

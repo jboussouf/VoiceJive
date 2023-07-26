@@ -5,24 +5,27 @@ from audio import FirebaseStorageManager
 from firebase_admin import auth
 from datetime import datetime
 
+#return document of the user
 def get_ref(user_id):
     db = firestore.client()
     doc_ref = db.collection('users').document(user_id)
     
     return doc_ref
 
+#return list of posts of a user 
 def get_posts(uid):
         doc_ref = get_ref(uid)
         doc_snapshot = doc_ref.get()
         doc_data = doc_snapshot.to_dict()
         return doc_data['posts']
-
+#return the account user name
 def get_UserName(uid):
         doc_ref = get_ref(uid)
         doc_snapshot = doc_ref.get()
         doc_data = doc_snapshot.to_dict()
         return doc_data['userName']
 
+#return all posts in a database
 def getAll_posts():
         posts = []
         list_users = auth.list_users().users
@@ -36,24 +39,27 @@ def getAll_posts():
                     posts.append((userName, subItem))
         return posts
 
+#return list of friends of a user
 def get_friend(uid):
     doc_ref = get_ref(uid)
     doc_snapshot = doc_ref.get()
     doc_data = doc_snapshot.to_dict()
     return doc_data['friends']
 
+#get the last msg between user and all friends
 def last_msg(uid, key):
     doc_ref = get_ref(uid)
     doc_snapshot = doc_ref.get()
     doc_data = doc_snapshot.to_dict()
     return doc_data['friends'][key]["messenger"][-1]
 
+#return all messages
 def all_msgs(uid, key):
     doc_ref = get_ref(uid)
     doc_snapshot = doc_ref.get()
     doc_data = doc_snapshot.to_dict()
     return doc_data['friends'][key]["messenger"]
-
+#return all friends
 def get_all_friends(uid):
     friend = get_friend(uid)
     friends_userNames = []
@@ -61,7 +67,7 @@ def get_all_friends(uid):
         msg=last_msg(uid, key).split('/')
         friends_userNames.append([key, get_UserName(key), msg[0], msg[-1]])
     return friends_userNames
-
+#get the users how are not friends of a user
 def not_friends(uid):
     list_users = auth.list_users().users
     all_friends = get_all_friends(uid)
@@ -74,7 +80,7 @@ def not_friends(uid):
     not_friend = [user for user in all_users if user not in friends_uid]
     return [(userID, get_UserName(userID)) for userID in not_friend]
 
-
+#create post or add friend to the list of friends send messages to friends
 class User():
 
     def __init__(self, uid):

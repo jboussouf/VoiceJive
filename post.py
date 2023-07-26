@@ -3,6 +3,7 @@ from firebase_admin import firestore
 
 """
 
+#add new post or commant or alse like to an exesting post
 class Post():
 
     def __init__(self, audio, caption):
