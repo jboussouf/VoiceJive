@@ -31,7 +31,7 @@ To use the application, you must first go to firebase and generate the json key 
 
 Run on the teminal:
 ```bash
-    source ./flaskiii/bin/acrtivate
+    source ./flaskiii/bin/activate
     python VoiceJive.py
 
 ```
